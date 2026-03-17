@@ -1,6 +1,6 @@
 {
   "name": "@vlydev/cs2-masked-inspect-ts",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Offline encoder/decoder for CS2 masked inspect URLs — TypeScript, fully typed, no dependencies",
   "type": "module",
   "main": "./dist/cjs/index.js",
@@ -20,7 +20,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json",
-    "test": "node --experimental-strip-types --test tests/inspect_link.test.ts",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
     "prepublishOnly": "npm run build"
   },
   "keywords": ["cs2", "csgo", "inspect", "protobuf", "steam", "typescript"],

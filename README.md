@@ -45,6 +45,31 @@ InspectLink.isMasked('steam://...csgo_econ_action_preview%20A0011...');  // true
 InspectLink.isClassic('steam://...csgo_econ_action_preview%20S123A456D789'); // true — classic S/A/D format
 ```
 
+## Gen codes
+
+Generate a Steam inspect URL from item parameters (defindex, paintindex, paintseed, paintwear):
+
+```ts
+import { generate, toGenCode, parseGenCode, ItemPreviewData } from '@vlydev/cs2-masked-inspect-ts';
+
+// Generate a Steam inspect URL from item parameters
+const url = generate(7, 474, 306, 0.22540508);
+// steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20...
+
+// Convert ItemPreviewData to a gen code string
+const item = new ItemPreviewData({ defIndex: 7, paintIndex: 474, paintSeed: 306, paintWear: 0.22540508 });
+toGenCode(item);        // "!gen 7 474 306 0.22540508"
+toGenCode(item, '!g'); // "!g 7 474 306 0.22540508"
+
+// Parse a gen code back to ItemPreviewData
+parseGenCode('!gen 7 474 306 0.22540508');
+
+// Convert an existing inspect link directly to a gen code
+import { genCodeFromLink } from '@vlydev/cs2-masked-inspect-ts';
+const code = genCodeFromLink('steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20001A...');
+// "!gen 7 474 306 0.22540508"
+```
+
 ## API
 
 ### `InspectLink`

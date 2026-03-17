@@ -7,3 +7,5 @@ export { crc32 } from './crc32.ts';
 export { ProtoReader } from './proto/reader.ts';
 export type { ProtoField } from './proto/reader.ts';
 export { ProtoWriter } from './proto/writer.ts';
+export { toGenCode, generate, parseGenCode, genCodeFromLink, INSPECT_BASE } from './GenCode.ts';
+export type { GenerateOptions } from './GenCode.ts';
