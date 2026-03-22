@@ -1,6 +1,6 @@
 {
   "name": "@vlydev/cs2-masked-inspect-ts",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Offline encoder/decoder for CS2 masked inspect URLs — TypeScript, fully typed, no dependencies",
   "type": "module",
   "main": "./dist/cjs/index.js",
