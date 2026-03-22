@@ -433,6 +433,35 @@ describe('CSFloat test vectors', () => {
   test('VectorC: no paintwear', () => assert.equal(InspectLink.deserialize(CSFLOAT_C).paintWear, null));
 });
 
+// ---------------------------------------------------------------------------
+// Sticker Slab — paintKit (proto field 12 inside Sticker sub-message)
+// keychains[0].stickerId is always 37 (placeholder); paintKit holds the
+// actual slab variant ID.
+// ---------------------------------------------------------------------------
+
+describe('Sticker Slab — paintKit', () => {
+  describe('rarity=5, paintKit=7256', () => {
+    const url = 'steam://run/730//+csgo_econ_action_preview%20918191895A9BB191B994A199F991E191339096999181B4F149A98D5C0889';
+    test('defIndex = 1355',             () => assert.equal(InspectLink.deserialize(url).defIndex,                 1355));
+    test('paintIndex = 0',              () => assert.equal(InspectLink.deserialize(url).paintIndex,                  0));
+    test('rarity = 5',                  () => assert.equal(InspectLink.deserialize(url).rarity,                      5));
+    test('quality = 8',                 () => assert.equal(InspectLink.deserialize(url).quality,                     8));
+    test('keychains.length = 1',        () => assert.equal(InspectLink.deserialize(url).keychains.length,             1));
+    test('keychains[0].stickerId = 37', () => assert.equal(InspectLink.deserialize(url).keychains[0]!.stickerId,     37));
+    test('keychains[0].paintKit = 7256',() => assert.equal(InspectLink.deserialize(url).keychains[0]!.paintKit,    7256));
+  });
+
+  describe('rarity=3, paintKit=275', () => {
+    const url = 'steam://run/730//+csgo_econ_action_preview%20CBDBCBD300C1EBCBE3C8FBC3A3CBBBCB69CACCC3CBDBEEAB58C9B8B67C83';
+    test('defIndex = 1355',             () => assert.equal(InspectLink.deserialize(url).defIndex,                 1355));
+    test('rarity = 3',                  () => assert.equal(InspectLink.deserialize(url).rarity,                      3));
+    test('quality = 8',                 () => assert.equal(InspectLink.deserialize(url).quality,                     8));
+    test('keychains.length = 1',        () => assert.equal(InspectLink.deserialize(url).keychains.length,             1));
+    test('keychains[0].stickerId = 37', () => assert.equal(InspectLink.deserialize(url).keychains[0]!.stickerId,     37));
+    test('keychains[0].paintKit = 275', () => assert.equal(InspectLink.deserialize(url).keychains[0]!.paintKit,     275));
+  });
+});
+
 describe('Roundtrip: highlight_reel and nullable paintWear', () => {
   test('highlightReel roundtrip', () => {
     const data = new ItemPreviewData({ defIndex: 7, keychains: [new Sticker({ slot: 0, stickerId: 36, highlightReel: 345 })] });

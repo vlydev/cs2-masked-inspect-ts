@@ -131,6 +131,7 @@ function encodeSticker(s: Sticker): Uint8Array {
   if (s.offsetZ  !== null) w.writeFloat32Fixed(9, s.offsetZ);
   w.writeUint32(10, s.pattern);
   if (s.highlightReel != null) w.writeUint32(11, s.highlightReel);
+  if (s.paintKit !== null) w.writeUint32(12, s.paintKit);
   return w.toBytes();
 }
 
@@ -181,6 +182,7 @@ function decodeSticker(data: Uint8Array): Sticker {
       }
       case 10: s.pattern      = Number(f.value as bigint); break;
       case 11: s.highlightReel = Number(f.value as bigint); break;
+      case 12: s.paintKit = Number(f.value as bigint); break;
       default: break;
     }
   }

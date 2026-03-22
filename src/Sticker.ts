@@ -16,6 +16,7 @@ export interface StickerInit {
   offsetZ?: number | null;
   pattern?: number;
   highlightReel?: number | null;
+  paintKit?: number | null;
 }
 
 export class Sticker {
@@ -30,6 +31,7 @@ export class Sticker {
   offsetZ: number | null;
   pattern: number;
   highlightReel: number | null;
+  paintKit: number | null;
 
   constructor({
     slot = 0,
@@ -43,6 +45,7 @@ export class Sticker {
     offsetZ = null,
     pattern = 0,
     highlightReel = null,
+    paintKit = null,
   }: StickerInit = {}) {
     this.slot = slot;
     this.stickerId = stickerId;
@@ -55,5 +58,6 @@ export class Sticker {
     this.offsetZ = offsetZ;
     this.pattern = pattern;
     this.highlightReel = highlightReel;
+    this.paintKit = paintKit;
   }
 }
