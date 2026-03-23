@@ -29,6 +29,40 @@ describe('toGenCode', () => {
     const item = new ItemPreviewData({ defIndex: 7, paintIndex: 474, paintSeed: 306, paintWear: 0.0 });
     assert.equal(toGenCode(item), '!gen 7 474 306 0');
   });
+
+  it('keychain with paintKit appends paintKit after wear', () => {
+    const item = new ItemPreviewData({
+      defIndex: 1355, paintIndex: 0, paintSeed: 0, paintWear: 0.0,
+      keychains: [new Sticker({ slot: 0, stickerId: 37, wear: 0, paintKit: 929 })],
+    });
+    const code = toGenCode(item, '');
+    const tokens = code.split(' ');
+    assert.equal(tokens[tokens.length - 3], '37');
+    assert.equal(tokens[tokens.length - 2], '0');
+    assert.equal(tokens[tokens.length - 1], '929');
+  });
+
+  it('keychain without paintKit does not append extra token', () => {
+    const item = new ItemPreviewData({
+      defIndex: 7, paintIndex: 0, paintSeed: 0, paintWear: 0.0,
+      keychains: [new Sticker({ slot: 0, stickerId: 36, wear: 0 })],
+    });
+    const code = toGenCode(item, '');
+    const tokens = code.split(' ');
+    assert.equal(tokens[tokens.length - 2], '36');
+    assert.equal(tokens[tokens.length - 1], '0');
+  });
+});
+
+describe('genCodeFromLink (sticker slab)', () => {
+  it('mousesports slab URL produces gen code ending with 37 0 929', () => {
+    const slabUrl = 'steam://run/730//+csgo_econ_action_preview%20819181994A8BA181A982B189E981F181238086898191A4E1208698F309C9';
+    const code = genCodeFromLink(slabUrl, '');
+    const tokens = code.split(' ');
+    assert.equal(tokens[tokens.length - 3], '37');
+    assert.equal(tokens[tokens.length - 2], '0');
+    assert.equal(tokens[tokens.length - 1], '929');
+  });
 });
 
 describe('parseGenCode', () => {
