@@ -90,7 +90,7 @@ function concatBytes(...arrays: Uint8Array[]): Uint8Array {
 const INSPECT_URL_RE = /(?:%20|\s|\+)A([0-9A-Fa-f]+)/i;
 const HYBRID_URL_RE  = /S\d+A\d+D([0-9A-Fa-f]+)$/i;
 const CLASSIC_URL_RE = /csgo_econ_action_preview(?:%20|\s)[SM]\d+A\d+D\d+$/i;
-const MASKED_URL_RE  = /csgo_econ_action_preview(?:%20|\s)[0-9A-Fa-f]{10,}$/i;
+const MASKED_URL_RE  = /csgo_econ_action_preview(?:%20|\s)%?[0-9A-Fa-f]{10,}$/i;
 
 function extractHex(input: string): string {
   const stripped = input.trim();
@@ -107,7 +107,7 @@ function extractHex(input: string): string {
 
   // Pure masked format: csgo_econ_action_preview%20<hexblob> (no S/A/M prefix).
   // Also handles payloads whose first hex character happens to be A.
-  const mm = stripped.match(/csgo_econ_action_preview(?:%20|\s|\+)([0-9A-Fa-f]{10,})$/i);
+  const mm = stripped.match(/csgo_econ_action_preview(?:%20|\s|\+)%?([0-9A-Fa-f]{10,})$/i);
   if (mm) return mm[1]!;
 
   // Bare hex — strip whitespace
