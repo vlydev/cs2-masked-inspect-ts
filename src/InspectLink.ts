@@ -372,7 +372,6 @@ export class InspectLink {
       const msg = e instanceof Error ? e.message : String(e);
       throw new MalformedInspectLinkError(
         `Malformed inspect URL: protobuf decode failed (${msg}). Payload likely corrupted or truncated. Input: "${abbreviate(input)}"`,
-        { cause: e },
       );
     }
   }

@@ -6,8 +6,8 @@
  * leaking implementation-specific errors.
  */
 export class MalformedInspectLinkError extends Error {
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options);
+  constructor(message: string) {
+    super(message);
     this.name = 'MalformedInspectLinkError';
   }
 }
