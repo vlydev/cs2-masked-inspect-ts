@@ -240,7 +240,10 @@ function decodeItem(data: Uint8Array): ItemPreviewData {
   for (const f of reader.readAllFields()) {
     switch (f.field) {
       case 1:  item.accountId          = Number(f.value as bigint); break;
-      case 2:  item.itemId             = Number(f.value as bigint); break;
+      // uint64: keep BigInt above 2^53-1 so ids >= 2^63 do not lose precision
+      case 2:  item.itemId             = (f.value as bigint) > BigInt(Number.MAX_SAFE_INTEGER)
+                                           ? (f.value as bigint)
+                                           : Number(f.value as bigint); break;
       case 3:  item.defIndex           = Number(f.value as bigint); break;
       case 4:  item.paintIndex         = Number(f.value as bigint); break;
       case 5:  item.rarity             = Number(f.value as bigint); break;

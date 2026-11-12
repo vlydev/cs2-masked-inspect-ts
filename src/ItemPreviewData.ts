@@ -9,8 +9,8 @@ import { Sticker } from './Sticker.ts';
  * paintWear is stored as a float32 (IEEE 754). On the wire it is reinterpreted
  * as a uint32 — this class always exposes it as a JavaScript number for convenience.
  *
- * accountId and itemId may be large integers; they are stored as number but
- * can also accept bigint for construction (values > 2^53 should use bigint).
+ * accountId and itemId may be large integers. itemId is uint64: deserialize returns
+ * a number when it is a safe integer and a bigint above 2^53-1 (e.g. ids >= 2^63).
  */
 export interface ItemPreviewDataInit {
   accountId?: number | bigint;

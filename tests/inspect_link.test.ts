@@ -516,3 +516,47 @@ describe('deserialize — malformed URLs (regression)', () => {
     assert.equal(err.name, 'MalformedInspectLinkError');
   });
 });
+
+// ---------------------------------------------------------------------------
+// uint64 itemid with the top bit set (10-byte varint)
+// ---------------------------------------------------------------------------
+
+describe('10-byte varint (uint64 itemid >= 2^63)', () => {
+  // Real Steam link (2026-11) whose itemid >= 2^63, encoded as a 10-byte varint.
+  const HIGH_BIT_ITEMID_URL =
+    'steam://run/730//+csgo_econ_action_preview%20' +
+    '4B5BD7E4B68FF5B880C5B54A53EC6C6BBC41634D7B4873A680CBB1480BAC49A56E6C13';
+
+  test('real-world link decodes with exact itemid', () => {
+    const item = InspectLink.deserialize(HIGH_BIT_ITEMID_URL);
+    assert.equal(item.itemId, 18310844006627497884n);
+    assert.equal(item.defIndex, 5031);
+    assert.equal(item.paintIndex, 1399);
+    assert.equal(item.rarity, 6);
+    assert.equal(item.quality, 3);
+  });
+
+  const boundaries: Array<[string, number | bigint]> = [
+    ['0', 0],
+    ['127', 127],
+    ['128', 128],
+    ['2^53-1', Number.MAX_SAFE_INTEGER],
+    ['2^53', 2n ** 53n],
+    ['2^63-1', 2n ** 63n - 1n],
+    ['2^63', 2n ** 63n],
+    ['2^64-1', 2n ** 64n - 1n],
+    ['real prod itemid', 18310844006627497884n],
+  ];
+  for (const [label, itemId] of boundaries) {
+    test(`round-trip itemid ${label}`, () => {
+      const back = roundtrip(new ItemPreviewData({ itemId, defIndex: 7 }));
+      assert.equal(back.itemId, itemId);
+      assert.equal(back.defIndex, 7);
+    });
+  }
+
+  test('11-byte varint is rejected', () => {
+    const hex = '00' + '10' + 'FF'.repeat(10) + '01' + '00000000';
+    assert.throws(() => InspectLink.deserialize(hex), MalformedInspectLinkError);
+  });
+});
